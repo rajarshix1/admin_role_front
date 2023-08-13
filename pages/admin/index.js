@@ -7,6 +7,7 @@ export default function Admin() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [mode, setMode] = useState();
+  const [allUsers, setAllUsers]= useState()
   const [userData, setUserData]= useState()
   const [selectedRoles, setSelectedRoles] = useState([]);
   const router = useRouter();
@@ -17,6 +18,19 @@ export default function Admin() {
     checkUser()
   }, [])
   
+  const getAllUsers = async () => {
+    console.log(email, password);
+    try {
+      const response = await axios.get("/api/admin/all_users",);
+      console.log(response);
+      setAllUsers(response.data)
+      // setSelectedRoles([])
+      // alert('Created Successfully')
+    } catch (error) {
+      alert(error.response.data.message)
+      router.push('/admin/login')
+    }
+  };
   const checkUser = async () => {
     console.log(email, password);
     try {
@@ -101,6 +115,14 @@ export default function Admin() {
 )}
 
      <div className="space-x-2">
+     <button
+    onClick={() => {
+      getAllUsers()
+      setMode('allUsers')}}
+    className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+  >
+    All Users
+  </button>
   {userData && userData.role!='moderator' && <button
     onClick={() => setMode('create')}
     className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -313,6 +335,35 @@ export default function Admin() {
           Delete
         </button>
       </form>}
+      {mode === 'allUsers' && (
+  <div className="w-3/4 mx-auto mt-8">
+  <table className="min-w-full border rounded-lg overflow-hidden">
+    <thead className="bg-gray-100">
+      <tr>
+        <th className="px-4 py-2 border">Name</th>
+        <th className="px-4 py-2 border">Roles</th>
+      </tr>
+    </thead>
+    <tbody className="bg-white">
+      {allUsers &&
+        allUsers.map((user) => (
+          <tr key={user._id}>
+            <td className="px-4 py-2 border text-center">{user.name}</td>
+            <td className="px-4 py-2 border text-center">
+              {user.roles.map((role, index) => (
+                <div key={index} className="py-1">
+                  {role}
+                </div>
+              ))}
+            </td>
+          </tr>
+        ))}
+    </tbody>
+  </table>
+</div>
+
+)}
+
     </div>
   );
 }

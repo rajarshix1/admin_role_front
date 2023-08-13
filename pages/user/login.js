@@ -24,8 +24,6 @@ export default function Login() {
         <input
           type="text"
           id="email"
-          // name="email"
-          // value={formData.email}
           onChange={e=>setEmail(e.target.value)}
           required
           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
@@ -38,8 +36,6 @@ export default function Login() {
         <input
           type="password"
           id="password"
-          // name="password"
-          // value={formData.password}
           onChange={e=>setPassword(e.target.value)}
           required
           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
